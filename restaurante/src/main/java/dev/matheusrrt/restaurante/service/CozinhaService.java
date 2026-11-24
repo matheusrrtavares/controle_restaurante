@@ -7,6 +7,7 @@ import dev.matheusrrt.restaurante.exception.RegraNegocioException;
 import dev.matheusrrt.restaurante.repository.PedidoItemRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -39,6 +40,7 @@ public class CozinhaService {
             throw new RegraNegocioException("Somente itens pendentes podem inicar preparo");
         }
         item.setStatusItemPedido(StatusItemPedido.EM_PREPARO);
+        item.setDataInicioPreparo(LocalDateTime.now());
 
         return CozinhaItemResponse.fromEntity(pedidoItemRepository.save(item));
     }
@@ -51,6 +53,7 @@ public class CozinhaService {
             throw new RegraNegocioException("Apenas itens em preparo podem ser marcados como pronto");
         }
         item.setStatusItemPedido(StatusItemPedido.PRONTO);
+        item.setDataPronto(LocalDateTime.now());
 
         return CozinhaItemResponse.fromEntity(pedidoItemRepository.save(item));
 
@@ -65,6 +68,8 @@ public class CozinhaService {
         }
 
         item.setStatusItemPedido(StatusItemPedido.ENTREGUE);
+        item.setDataEntrega(LocalDateTime.now());
+
         return CozinhaItemResponse.fromEntity(pedidoItemRepository.save(item));
 
     }
